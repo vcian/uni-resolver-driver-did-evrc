@@ -1,0 +1,71 @@
+openapi: 3.0.0
+info:
+  title: Everycred universal resolver driver
+  version: '1.0'
+  description: |-
+    This is an api of the services available from the Everycred universal resolver driver application.
+
+    All PATCH commands must conform to RFC6902.
+
+    All PUT commands are complete replacements of the given endpoint and return code 204.
+
+    All DELETE commands return code 204.
+  contact:
+    url: info@evrc_method.com #/v1/
+    email: info@evrc_method.com
+servers:
+  - url: /v1/
+    description: Production/Development evrc server
+
+
+# Paths (i.e. API routes) supported by the server application
+paths:
+   '/identifiers/{identifier}':
+    parameters:
+      - schema:
+          type: string
+        name: identifier
+        in: path
+        required: true
+        description: A DID or other identifier to be resolved.
+        example: did:evrc:example:1087b75f-1ee9-4c72-a58c-08bef720039d
+    get:
+      summary: Resolve a DID or other identifier.
+      tags:
+        - Identifier
+      responses:
+        "200":
+          description: successfully resolved!
+          content:
+            application/did+json:
+              schema:
+                type: object
+                description: The DID document (JSON representation).
+                example:
+                  id: did:evrc:example:1087b75f-1ee9-4c72-a58c-08bef720039d
+                  publicKey:
+                  - id: did:evrc:example:1087b75f-1ee9-4c72-a58c-08bef720039d#key-1
+                    type: Ed25519VerificationKey2018
+                    publicKeyBase58: 1087b75f-1ee9-4c72-a58c-08bef720039d
+                x-content-type: application/did+json
+            application/did+ld+json:
+              schema:
+                type: object
+                description: The DID document (JSON-LD representation).
+                example:
+                  '@context': https://www.w3.org/2019/did/v1
+                  id: 1087b75f-1ee9-4c72-a58c-08bef720039d
+                  publicKey:
+                  - id: did:evrc:example:1087b75f-1ee9-4c72-a58c-08bef720039d
+                    type: Ed25519VerificationKey2018
+                    publicKeyBase58: 1087b75f-1ee9-4c72-a58c-08bef720039d
+        "400":
+          description: invalid input!
+        "500":
+          description: error!
+      operationId: api.get_did
+      description: Return a user.
+      
+# Tags that group the API endpoints
+tags:
+  - name: Identifier
