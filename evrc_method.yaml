@@ -14,7 +14,7 @@ info:
     url: info@evrc_method.com #/v1/
     email: info@evrc_method.com
 servers:
-  - url: /v1/
+  - url: /1.0/
     description: Production/Development evrc server
 
 
